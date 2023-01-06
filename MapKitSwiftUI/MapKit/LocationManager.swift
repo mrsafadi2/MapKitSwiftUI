@@ -10,12 +10,11 @@ import CoreLocation
 import MapKit
 import Combine
 
-final class LocationManager: NSObject, ObservableObject , MKMapViewDelegate,CLLocationManagerDelegate {
+final class LocationManager: NSObject, ObservableObject , MKMapViewDelegate {
     private let locationManager = CLLocationManager()
-    
-    @Published var region = MKCoordinateRegion(//center: CLLocationCoordinate2D(latitude: 42.0422448, longitude: -102.0079053),//span: MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)
-    )
-    
+
+    @Published var region = MKCoordinateRegion(center: .init(latitude: 24.6453905, longitude: 46.697795), latitudinalMeters: 500, longitudinalMeters: 500)
+
     @Published var searchTrxt = ""
     @Published var mapView: MKMapView = .init()
     @Published var currentlocation:CLLocation?
@@ -23,9 +22,6 @@ final class LocationManager: NSObject, ObservableObject , MKMapViewDelegate,CLLo
     @Published var places:[CLPlacemark] = []
     @Published var pickedlocation:CLLocation?
     @Published var pickedplacemarker:CLPlacemark?
-
-    let loc1 = CLLocationCoordinate2D.init(latitude: 40.741895, longitude: -73.989308)
-    let loc2 = CLLocationCoordinate2D.init(latitude: 40.728448, longitude: -73.717996)
     
     var cancellable:AnyCancellable?
 
@@ -36,7 +32,8 @@ final class LocationManager: NSObject, ObservableObject , MKMapViewDelegate,CLLo
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
         requestLocation()
-        
+        mapView.setRegion(region, animated: true)
+
         cancellable = $searchTrxt
             .debounce(for: .seconds(0.5), scheduler: DispatchQueue.main)
             .removeDuplicates()
@@ -60,17 +57,25 @@ final class LocationManager: NSObject, ObservableObject , MKMapViewDelegate,CLLo
     }
 
     
+}
+
+
+extension LocationManager : CLLocationManagerDelegate {
+    
     // MARK: Used to get last location for accure and update his region
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
         DispatchQueue.main.async {
             self.currentlocation = location
             self.location = location.coordinate
-            self.region = MKCoordinateRegion(
-                center: location.coordinate,
-                span: MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)
-            )
-        }
+            self.region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 500, longitudinalMeters: 500)
+         }
+    }
+    
+    
+    // MARK: Handel Error
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print (error)
     }
     
     // MARK: Fetch Placemarkers serch
@@ -92,36 +97,18 @@ final class LocationManager: NSObject, ObservableObject , MKMapViewDelegate,CLLo
             }
         }
     }
-    
-    // MARK: Handel Error
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print (error)
-    }
+
     
     // MARK: To add pin marker to map
     func addPintoMap(coordinate:CLLocationCoordinate2D){
         let pinMarker = MKPointAnnotation()
         pinMarker.coordinate = coordinate
-        pinMarker.title = "My Current Location"
+        pinMarker.title = "Selected Location"
         
         mapView.addAnnotation(pinMarker)
     }
+
     
-    // MARK: To Set pin marker draggable
-    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        let marker = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: "Deliver Pin")
-        marker.isDraggable = true
-        marker.canShowCallout = false
-        
-        return marker
-    }
-    
-    // MARK: To update pin marker cordinates when change
-    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, didChange newState: MKAnnotationView.DragState, fromOldState oldState: MKAnnotationView.DragState) {
-        guard let newLocation = view.annotation?.coordinate else{ return}
-        self.pickedlocation = .init(latitude: newLocation.latitude, longitude: newLocation.longitude)
-        updatePickedPlacemarker(location: .init(latitude: newLocation.latitude, longitude: newLocation.longitude))
-    }
     
     func updatePickedPlacemarker(location: CLLocation){
         Task{
@@ -147,7 +134,4 @@ final class LocationManager: NSObject, ObservableObject , MKMapViewDelegate,CLLo
         return place
     }
     
- 
-    
-
 }

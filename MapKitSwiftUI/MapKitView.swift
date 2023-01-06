@@ -10,7 +10,7 @@ import CoreLocationUI
 import MapKit
 
 struct MapKitView: View {
-    @StateObject var locationManager = LocationManager()
+    @StateObject var locationManager: LocationManager = .init()
     @State var region = MKCoordinateRegion()
     var body: some View {
         NavigationView {
@@ -19,33 +19,12 @@ struct MapKitView: View {
                     .environmentObject(locationManager)
                     .onReceive(locationManager.$region) { region in
                         self.region = region
-                    }
+                        locationManager.mapView.setRegion(region, animated: true)
 
-                Map(coordinateRegion: $region, showsUserLocation: true)
-//                    .edgesIgnoringSafeArea(.all)
-//                    .onReceive(locationManager.$region) { region in
-//                        self.region = region
-//                    }
-                
+                        locationManager.addPintoMap(coordinate: .init(latitude: region.center.latitude , longitude: region.center.longitude))
+                    }
+ 
                 VStack {
-                    if let location = locationManager.location {
-                        Text("Current location: \(location.latitude), \(location.longitude)")
-                            .font(.callout)
-                            .foregroundColor(.white)
-                            .padding()
-                            .background(.gray)
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                    }
-
-                    Spacer()
-                    LocationButton {
-                        locationManager.requestLocation()
-                    }
-                    .frame(width: 180, height: 40)
-                    .cornerRadius(30)
-                    .symbolVariant(.fill)
-                    .foregroundColor(.white)
-                    
                     NavigationLink {
                         SearchView()
                     } label: {

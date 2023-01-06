@@ -17,6 +17,7 @@
 		C881714329636DDF00C7D970 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C881714229636DDF00C7D970 /* SearchView.swift */; };
 		C88171452963760F00C7D970 /* SelectionPlaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C88171442963760F00C7D970 /* SelectionPlaceView.swift */; };
 		C8817147296421D600C7D970 /* RouteRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8817146296421D600C7D970 /* RouteRepresentable.swift */; };
+		C8CF59E929686C750078521A /* MapKitCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8CF59E829686C750078521A /* MapKitCoordinator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		C881714229636DDF00C7D970 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		C88171442963760F00C7D970 /* SelectionPlaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionPlaceView.swift; sourceTree = "<group>"; };
 		C8817146296421D600C7D970 /* RouteRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteRepresentable.swift; sourceTree = "<group>"; };
+		C8CF59E829686C750078521A /* MapKitCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapKitCoordinator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,7 +67,7 @@
 			isa = PBXGroup;
 			children = (
 				C881712629631D6200C7D970 /* MapKitSwiftUIApp.swift */,
-				C881713D29634FC100C7D970 /* LocationManager.swift */,
+				C8CF59E729686C590078521A /* MapKit */,
 				C881714129636DD100C7D970 /* Views */,
 				C881713529631D8F00C7D970 /* RouteMapView.swift */,
 				C881713F2963509F00C7D970 /* MapKitView.swift */,
@@ -89,10 +91,27 @@
 			children = (
 				C881714229636DDF00C7D970 /* SearchView.swift */,
 				C88171442963760F00C7D970 /* SelectionPlaceView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		C8CF59E729686C590078521A /* MapKit */ = {
+			isa = PBXGroup;
+			children = (
+				C8CF59EA29686E470078521A /* Representables */,
+				C881713D29634FC100C7D970 /* LocationManager.swift */,
+				C8CF59E829686C750078521A /* MapKitCoordinator.swift */,
+			);
+			path = MapKit;
+			sourceTree = "<group>";
+		};
+		C8CF59EA29686E470078521A /* Representables */ = {
+			isa = PBXGroup;
+			children = (
 				C881713B2963202C00C7D970 /* MapViewRepresentable.swift */,
 				C8817146296421D600C7D970 /* RouteRepresentable.swift */,
 			);
-			path = Views;
+			path = Representables;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -171,6 +190,7 @@
 				C881713629631D8F00C7D970 /* RouteMapView.swift in Sources */,
 				C881713E29634FC100C7D970 /* LocationManager.swift in Sources */,
 				C881714329636DDF00C7D970 /* SearchView.swift in Sources */,
+				C8CF59E929686C750078521A /* MapKitCoordinator.swift in Sources */,
 				C8817147296421D600C7D970 /* RouteRepresentable.swift in Sources */,
 				C881712729631D6200C7D970 /* MapKitSwiftUIApp.swift in Sources */,
 			);

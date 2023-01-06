@@ -9,6 +9,7 @@ import SwiftUI
 
 @main
 struct MapKitSwiftUIApp: App {
+        
     var body: some Scene {
         WindowGroup {
             MapKitView()
